@@ -1,3 +1,17 @@
+# testing notebooks
+notebook/
+
+# running logs
+src/logs
+src/training_logs
+
+# vs code settings
+.vscode/
+
+# data file
+data/
+bin/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
