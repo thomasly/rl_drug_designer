@@ -20,7 +20,11 @@ def smiles_sampler(n_samples):
             line = sdf.readline()
             while line:
                 if b"ISO_SMILES" in line:
-                    smiles.append(sdf.readline())
+                    line = sdf.readline()
+                    if len(line) > 100:
+                        line = sdf.readline()
+                        continue
+                    smiles.append(line)
                     counter += 1
                 if counter == n_samples:
                     break
