@@ -8,7 +8,7 @@ from utils.paths import Path
 from utils.smiles_reader import get_smiles_from_sdf
 
 
-threshold = 10
+threshold = 20
 gzfiles = list(os.scandir(Path.sdf_full))
 shuffle(gzfiles)
 smiles_token = set()
