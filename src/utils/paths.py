@@ -10,3 +10,4 @@ class Path:
     src = op.join(root, "src")
     pubChem = op.join(datasets, "pubChem_compound")
     sdf_full = op.join(pubChem, "SDF_full")
+    smiles_tokens = op.join(data, "smiles_token")
