@@ -5,8 +5,30 @@ import pickle as pk
 from random import shuffle
 
 from tqdm import tqdm
+from rdkit import Chem
+
 from utils.paths import Path
 from utils.smiles_reader import get_smiles_from_sdf
+
+
+def get_nonelement_tokens(smiles):
+    nonelements = set()
+    for t in set(smiles):
+        if t.isalpha:
+            continue
+        nonelements.add(t)
+    return nonelements
+
+
+def get_tokens(smiles):
+    tokens = set()
+    mol = Chem.MolFromSmiles(smiles)
+    atoms = mol.GetAtoms()
+    atoms = set(map(lambda x: x.GetSymbol(), atoms))
+    tokens = tokens.union(atoms)
+    other_tokens = get_nonelement_tokens(smiles)
+    tokens = tokens.union(other_tokens)
+    return tokens
 
 
 def find_tockens(threshold):
@@ -21,7 +43,7 @@ def find_tockens(threshold):
             continue
         smiles = get_smiles_from_sdf(gzfile.path)
         for ss in smiles:
-            smiles_token = smiles_token.union(set(ss.decode("utf-8")))
+            smiles_token = smiles_token.union(get_tokens(ss.decode("utf-8")))
         if len(smiles_token) == last_len:
             round +=1
             if round == threshold:
