@@ -2,7 +2,7 @@ import os
 import gzip
 from random import sample, shuffle
 
-from paths import Path
+from .paths import Path
 
 
 def get_smiles_from_sdf(path):
