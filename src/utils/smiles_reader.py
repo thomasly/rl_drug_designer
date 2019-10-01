@@ -5,7 +5,7 @@ from random import sample, shuffle
 from rdkit import Chem
 import numpy as np
 
-from paths import Path
+from .paths import Path
 
 
 def get_smiles_from_sdf(path, max_len=100):
