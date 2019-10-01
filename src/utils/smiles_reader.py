@@ -41,9 +41,10 @@ def smiles_sampler(n_samples):
             break
 
     if counter < n_samples:
-        print(f"No enough samples in the dataset. Sampled {counter}.")
+        print("No enough samples in the dataset. Sampled {}.".format(counter))
     else:
-        print(f"Successfully sampled {counter} samples from the datset.")
+        print(
+            "Successfully sampled {} samples from the datset.".format(counter))
     while 1:
         shuffle(smiles)
         for ss in smiles:

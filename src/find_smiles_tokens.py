@@ -30,7 +30,7 @@ for gzfile in tqdm(gzfiles):
             last_len = len(smiles_token)
     
 print(smiles_token)
-print(f"Total tokens: {len(smiles_token)}")
+print("Total tokens: {}".format(len(smiles_token)))
 save_path = os.path.join(Path.data, "smiles_token")
 with open(save_path, "wb") as f:
     pk.dump(smiles_token, f)
