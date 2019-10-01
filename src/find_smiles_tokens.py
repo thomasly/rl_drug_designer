@@ -14,7 +14,7 @@ from utils.smiles_reader import get_smiles_from_sdf
 def get_nonelement_tokens(smiles):
     nonelements = set()
     for t in set(smiles):
-        if t.isalpha:
+        if t.isalpha():
             continue
         nonelements.add(t)
     return nonelements
@@ -23,9 +23,12 @@ def get_nonelement_tokens(smiles):
 def get_tokens(smiles):
     tokens = set()
     mol = Chem.MolFromSmiles(smiles)
-    atoms = mol.GetAtoms()
-    atoms = set(map(lambda x: x.GetSymbol(), atoms))
-    tokens = tokens.union(atoms)
+    try:
+        atoms = mol.GetAtoms()
+        atoms = set(map(lambda x: x.GetSymbol(), atoms))
+        tokens = tokens.union(atoms)
+    except AttributeError:
+        print("{} is not valid".format(smiles))
     other_tokens = get_nonelement_tokens(smiles)
     tokens = tokens.union(other_tokens)
     return tokens
