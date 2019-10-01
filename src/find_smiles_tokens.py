@@ -36,12 +36,14 @@ def find_tockens(threshold):
 
     os.makedirs(Path.data, exist_ok=True)
     with open(save_path, "wb") as f:
+        smiles_token = list(smiles_token)
+        smiles_token.sort()
         pk.dump(smiles_token, f)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-t", "--threshold", type=int, help="Threshold number.")
+    parser.add_argument("-t", "--threshold", type=int, help="Threshold number")
     args = parser.parse_args()
     find_tockens(threshold=args.threshold)
 
