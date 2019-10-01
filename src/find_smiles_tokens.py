@@ -28,6 +28,8 @@ for gzfile in tqdm(gzfiles):
         else:
             round = 0
             last_len = len(smiles_token)
+    if round == threshold:
+        break
     
 print(smiles_token)
 print("Total tokens: {}".format(len(smiles_token)))
