@@ -21,15 +21,13 @@ for gzfile in tqdm(gzfiles):
     smiles = get_smiles_from_sdf(gzfile.path)
     for ss in smiles:
         smiles_token = smiles_token.union(set(ss.decode("utf-8")))
-        if len(smiles_token) == last_len:
-            round +=1
-            if round == threshold:
-                break
-        else:
-            round = 0
-            last_len = len(smiles_token)
-    if round == threshold:
-        break
+    if len(smiles_token) == last_len:
+        round +=1
+        if round == threshold:
+            break
+    else:
+        round = 0
+        last_len = len(smiles_token)
     
 print(smiles_token)
 print("Total tokens: {}".format(len(smiles_token)))
