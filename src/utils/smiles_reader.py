@@ -1,6 +1,7 @@
 import os
 import gzip
-from random import sample, shuffle
+import pickle as pk
+from random import shuffle
 
 from rdkit import Chem
 import numpy as np
@@ -83,16 +84,22 @@ def smiles2sequence(smiles, vocab, max_len=100):
     return sequence
 
 
-if __name__ == "__main__":
-    import pickle as pk
+def get_smiles_tokens():
+    """ Get all the notes and chords from the midi files in the ./midi_songs \
+        directory 
+    """
+    with open(Path.smiles_tokens, "rb") as f:
+        tokens = pk.load(f)
+    return tokens
 
+
+if __name__ == "__main__":
     gen = smiles_sampler(100)
     for i in range(5):
         ss = next(gen)
         print(ss)
         print("length:", len(ss))
-        with open(Path.smiles_tokens, "rb") as f:
-            tokens = pk.load(f)
+        tokens = get_smiles_tokens()
         vocab = dict((token, number) for number, token in enumerate(tokens))
         seq = smiles2sequence(ss, vocab)
         print("sequence:", seq)
