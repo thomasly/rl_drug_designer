@@ -95,11 +95,12 @@ def get_smiles_tokens():
 
 if __name__ == "__main__":
     gen = smiles_sampler(100)
+    tokens = get_smiles_tokens()
+    vocab = dict((token, number) for number, token in enumerate(tokens))
+    print(vocab)
     for i in range(5):
         ss = next(gen)
         print(ss)
         print("length:", len(ss))
-        tokens = get_smiles_tokens()
-        vocab = dict((token, number) for number, token in enumerate(tokens))
         seq = smiles2sequence(ss, vocab)
         print("sequence:", seq)

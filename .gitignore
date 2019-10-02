@@ -1,7 +1,11 @@
+# model training checkpoints
+checkpoints/
+
 # testing notebooks
 notebook/
 
 # running logs
+logs/
 src/logs
 src/training_logs
 
