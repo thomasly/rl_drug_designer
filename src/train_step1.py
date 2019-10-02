@@ -6,16 +6,8 @@ from tf.keras.callbacks import ModelCheckpoint
 from models import lstm_model
 from utils.paths import Path
 from utils.smiles_reader import smiles_sampler
-
-
-def get_tokens():
-    """ Get all the notes and chords from the midi files in the ./midi_songs \
-        directory 
-    """
-    tokens = list()
-    with open(Path.smiles_tokens, "rb") as f:
-        tokens = pk.load(f)
-    return tokens
+from utils.smiles_reader import smiles2sequence
+from utils.smiles_reader import get_smiles_tokens
 
 
 def prepare_sequences(tokens, n_vocab, seq_len=100):
