@@ -105,7 +105,8 @@ def train(model, batch_size=32, epochs=100, n_samples=1000):
         monitor='loss',
         verbose=0,
         save_best_only=True,
-        mode='min'
+        mode='min',
+        period=10
     )
     name_generator = LambdaCallback(on_epoch_end=generate_name_loop)
     callbacks_list = [checkpoint, name_generator]
