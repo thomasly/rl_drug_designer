@@ -10,6 +10,7 @@ from utils.paths import Path
 from utils.smiles_reader import smiles_sampler
 from utils.smiles_reader import smiles2sequence
 from utils.smiles_reader import get_smiles_tokens
+from utils.mylog import MyLog
 
 
 def sequences_generator(batch_size=32,
@@ -81,6 +82,19 @@ def generate_name_loop(epoch, _):
 
 
 def train(model, batch_size=32, epochs=100, n_samples=1000):
+    # optimize gpu memory usage 
+    try:
+        physical_devices = tf.config.experimental.list_physical_devices('GPU')
+        assert len(physical_devices) > 0
+        tf.config.experimental.set_memory_growth(physical_devices[0], True)
+    except AttributeError: # tensorflow 1.x compat
+        from tensorflow.keras.backend import set_session
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+        sess = tf.Session(config=config)
+        set_session(sess)
+
+
     """ train the neural network """
     saving_path = Path.checkpoints
     os.makedirs(saving_path, exist_ok=True)
@@ -93,7 +107,7 @@ def train(model, batch_size=32, epochs=100, n_samples=1000):
         save_best_only=True,
         mode='min'
     )
-    name_generator = LambdaCallback(on_epoch_end = generate_name_loop)
+    name_generator = LambdaCallback(on_epoch_end=generate_name_loop)
     callbacks_list = [checkpoint, name_generator]
     
     data_generator = sequences_generator(
@@ -102,7 +116,7 @@ def train(model, batch_size=32, epochs=100, n_samples=1000):
     steps = int(n_samples/batch_size)
     model.fit_generator(
         data_generator, steps_per_epoch=steps, epochs=epochs,
-        callbacks=callbacks_list)
+        callbacks=callbacks_list, verbose=1)
 
 
 if __name__ == "__main__":
