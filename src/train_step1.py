@@ -12,6 +12,7 @@ from utils.smiles_reader import smiles2sequence
 from utils.smiles_reader import get_smiles_tokens
 from utils.smiles_reader import get_token2int
 from utils.smiles_reader import get_int2token
+from utils.model_actions import make_name
 from utils.mylog import MyLog
 
 
@@ -45,34 +46,8 @@ def sequences_generator(batch_size=32,
         yield X, Y
 
 
-def make_name(model, seq_len=100):
-    index_to_char = get_int2token()
-    vocab_len = len(index_to_char)
-    name = []
-    x = np.zeros((1, seq_len, vocab_len))
-    end = False
-    i = 0
-    
-    while end==False:
-        probs = list(model.predict(x)[0,i])
-        probs = probs / np.sum(probs)
-        index = np.random.choice(range(vocab_len), p=probs)
-        if i == seq_len-2:
-            character = '\n'
-            end = True
-        else:
-            character = index_to_char[index]
-        name.append(character)
-        x[0, i+1, index] = 1
-        i += 1
-        if character == '\n':
-            end = True
-    
-    return ''.join(name)
-
-
 def generate_name_loop(epoch, _):
-    if epoch % 24 == 0:
+    if epoch % 10 == 0:
         print('SMILES generated after epoch %d:' % epoch)
         for i in range(3):
             name = make_name(model)
@@ -107,7 +82,7 @@ def train(model, batch_size=32, epochs=100, n_samples=1000):
         mode='min',
         period=10
     )
-    name_generator = LambdaCallback(on_epoch_end=generate_name_loop)
+    name_generator = LambdaCallback(on_epoch_begin=generate_name_loop)
     callbacks_list = [checkpoint, name_generator]
     
     data_generator = sequences_generator(
