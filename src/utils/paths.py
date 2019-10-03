@@ -12,3 +12,4 @@ class Path:
     sdf_full = op.join(pubChem, "SDF_full")
     smiles_tokens = op.join(data, "smiles_token")
     checkpoints = op.join(root, "checkpoints")
+    log = op.join(root, "logs")
