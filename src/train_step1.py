@@ -10,6 +10,8 @@ from utils.paths import Path
 from utils.smiles_reader import smiles_sampler
 from utils.smiles_reader import smiles2sequence
 from utils.smiles_reader import get_smiles_tokens
+from utils.smiles_reader import get_token2int
+from utils.smiles_reader import get_int2token
 from utils.mylog import MyLog
 
 
@@ -22,10 +24,8 @@ def sequences_generator(batch_size=32,
     n_samples (int): number of SMILES to sample from pubChem dataset
     """
 
-    
-    tokens = get_smiles_tokens()
-    vocab = dict((name, index) for index, name in enumerate(tokens))
-    vocab_len = len(tokens)
+    vocab = get_token2int()
+    vocab_len = len(vocab)
      # create a dictionary to map tokens to integers
     sampler = smiles_sampler(n_samples)
 
@@ -46,9 +46,8 @@ def sequences_generator(batch_size=32,
 
 
 def make_name(model, seq_len=100):
-    tokens = get_smiles_tokens()
-    index_to_char = dict((index, name) for index, name in enumerate(tokens))
-    vocab_len = len(tokens)
+    index_to_char = get_int2token()
+    vocab_len = len(index_to_char)
     name = []
     x = np.zeros((1, seq_len, vocab_len))
     end = False

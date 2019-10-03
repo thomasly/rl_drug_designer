@@ -93,6 +93,18 @@ def get_smiles_tokens():
     return tokens
 
 
+def get_token2int():
+    tokens = get_smiles_tokens()
+    t2i = dict((token, index) for index, token in enumerate(tokens))
+    return t2i
+
+
+def get_int2token():
+    tokens = get_smiles_tokens()
+    i2t = dict((index, token) for index, token in enumerate(tokens))
+    return i2t
+
+
 if __name__ == "__main__":
     gen = smiles_sampler(100)
     tokens = get_smiles_tokens()
