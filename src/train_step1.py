@@ -4,6 +4,7 @@ import pickle as pk
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.callbacks import ModelCheckpoint, LambdaCallback
+from tensorflow.keras.callbacks import EarlyStopping
 
 from models import lstm_model
 from utils.paths import Path
@@ -82,8 +83,9 @@ def train(model, batch_size=32, epochs=100, n_samples=1000):
         mode='min',
         period=10
     )
+    earlystop = EarlyStopping(monitor="loss", patience=5, mode="min")
     name_generator = LambdaCallback(on_epoch_begin=generate_name_loop)
-    callbacks_list = [checkpoint, name_generator]
+    callbacks_list = [checkpoint, earlystop, name_generator]
     
     data_generator = sequences_generator(
         batch_size=batch_size, n_samples=n_samples)
