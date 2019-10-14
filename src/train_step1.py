@@ -3,7 +3,8 @@ import pickle as pk
 
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.callbacks import ModelCheckpoint, LambdaCallback
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras.callbacks import LambdaCallback
 from tensorflow.keras.callbacks import EarlyStopping
 
 from models import lstm_model
