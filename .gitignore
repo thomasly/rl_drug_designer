@@ -3,6 +3,7 @@ checkpoints/
 
 # testing notebooks
 notebook/
+*.ipynb
 
 # running logs
 logs/
