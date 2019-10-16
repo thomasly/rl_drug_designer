@@ -1,7 +1,8 @@
 # model training checkpoints
 checkpoints/
 
-# testing notebooks
+# testing notebooks and scripts
+playground.*
 notebook/
 *.ipynb
 
