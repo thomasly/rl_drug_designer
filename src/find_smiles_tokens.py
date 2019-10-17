@@ -1,6 +1,5 @@
 import os
 import argparse
-import gzip
 import pickle as pk
 from random import shuffle
 
@@ -48,13 +47,13 @@ def find_tockens(threshold):
         for ss in smiles:
             smiles_token = smiles_token.union(get_tokens(ss.decode("utf-8")))
         if len(smiles_token) == last_len:
-            round +=1
+            round += 1
             if round == threshold:
                 break
         else:
             round = 0
             last_len = len(smiles_token)
-        
+
     print(smiles_token)
     print("Total tokens: {}".format(len(smiles_token)))
     save_path = os.path.join(Path.data, "smiles_token")
@@ -71,4 +70,3 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--threshold", type=int, help="Threshold number")
     args = parser.parse_args()
     find_tockens(threshold=args.threshold)
-

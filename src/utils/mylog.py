@@ -2,6 +2,7 @@ import os
 import time
 from .paths import Path
 
+
 class MyLog(object):
 
     def timestamp():

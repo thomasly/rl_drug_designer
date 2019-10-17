@@ -4,7 +4,6 @@ import pickle as pk
 from random import shuffle
 
 from rdkit import Chem
-import numpy as np
 
 from .paths import Path
 
@@ -65,7 +64,6 @@ def smiles_sampler(n_samples):
 
 
 def smiles2sequence(smiles, vocab, max_len=100):
-    vocab_len = len(vocab)
     sequence = [0] * max_len
     idx_ss = 0
     idx_seq = 0
@@ -86,7 +84,7 @@ def smiles2sequence(smiles, vocab, max_len=100):
 
 def get_smiles_tokens():
     """ Get all the notes and chords from the midi files in the ./midi_songs \
-        directory 
+        directory
     """
     with open(Path.smiles_tokens, "rb") as f:
         tokens = pk.load(f)
