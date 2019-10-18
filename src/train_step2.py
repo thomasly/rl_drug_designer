@@ -59,7 +59,7 @@ def train(agent, n_episodes=10, batch_size=32):
         while n_valid < 10:
             memory, smiles, reward = play_episode(agent)
             print("SMILES: {}, reward: {}".format(smiles.strip(), reward))
-            if reward != 0:
+            if reward > 0.5:
                 n_valid += 1
                 for m in memory:
                     agent.remember(*m)
