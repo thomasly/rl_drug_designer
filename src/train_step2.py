@@ -74,8 +74,11 @@ def train(agent, n_episodes=10, batch_size=32):
             agent.replay(batch_size)
 
         if e + 1 % 50 == 0:
-            agent.save(os.path.join(
-                        output_dir, "weights_" + '{:04d}'.format(e) + ".hdf5"))
+            print("Saving model...")
+            save_path = os.path.join(
+                output_dir, "weights_" + "episode{:04d}".format(e) + ".hdf5")
+            agent.save(save_path)
+            print("model saved to {}".format(save_path))
         e += 1
 
 
