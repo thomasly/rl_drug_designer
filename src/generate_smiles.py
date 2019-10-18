@@ -19,6 +19,7 @@ if __name__ == "__main__":
 
     log_file = os.path.join(Path.log, "SMILES_after_step1.txt")
     with open(log_file, "w") as f:
+        print("model: {}".format(args.model), file=f)
         for _ in tqdm(range(args.n_samples)):
             name = make_name(model)
             print(name, file=f)

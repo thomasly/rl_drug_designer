@@ -1,3 +1,4 @@
+import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Dropout
@@ -24,3 +25,16 @@ def lstm_model(input_shape):
     model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
 
     return model
+
+
+def optimize_gpu_usage():
+    try:
+        physical_devices = tf.config.experimental.list_physical_devices('GPU')
+        assert len(physical_devices) > 0
+        tf.config.experimental.set_memory_growth(physical_devices[0], True)
+    except AttributeError:  # tensorflow 1.x compat
+        from tensorflow.keras.backend import set_session
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+        sess = tf.Session(config=config)
+        set_session(sess)

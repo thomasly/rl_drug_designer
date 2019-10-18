@@ -1,12 +1,12 @@
 import os
 
 import numpy as np
-import tensorflow as tf
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.callbacks import LambdaCallback
 from tensorflow.keras.callbacks import EarlyStopping
 
 from utils.models import lstm_model
+from utils.models import optimize_gpu_usage
 from utils.paths import Path
 from utils.smiles_reader import smiles_sampler
 from utils.smiles_reader import smiles2sequence
@@ -56,16 +56,7 @@ def generate_name_loop(epoch, _):
 
 def train(model, batch_size=32, epochs=100, n_samples=1000):
     # optimize gpu memory usage
-    try:
-        physical_devices = tf.config.experimental.list_physical_devices('GPU')
-        assert len(physical_devices) > 0
-        tf.config.experimental.set_memory_growth(physical_devices[0], True)
-    except AttributeError:  # tensorflow 1.x compat
-        from tensorflow.keras.backend import set_session
-        config = tf.ConfigProto()
-        config.gpu_options.allow_growth = True
-        sess = tf.Session(config=config)
-        set_session(sess)
+    optimize_gpu_usage()
 
     # train the neural network
     saving_path = Path.checkpoints

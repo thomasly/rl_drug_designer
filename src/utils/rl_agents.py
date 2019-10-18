@@ -33,23 +33,25 @@ class DQNAgent:
         else:
             model = tf.keras.models.load_model(model_path)
         # recompile the model, use MSE as loss
-        model.compile(loss="mse", optimizer=Adam(lr=self.learning_rate))
+        # model.compile(loss="mse", optimizer=Adam(lr=self.learning_rate))
         return model
 
     def remember(self, state, action, reward, next_state, done, index):
         # list of previous experiences, enabling re-training later
         self.memory.append((state, action, reward, next_state, done, index))
 
-    def act(self, state, index):
+    def act(self, state, index, greedy=False):
         # if acting randomly, take random action
-        if np.random.rand() <= self.epsilon:
+        if not greedy and np.random.rand() <= self.epsilon:
             return random.randrange(self.action_size)
         # if not acting randomly, predict reward value based on current state
         act_values = self.model.predict(state)[0, index]
-        # pick the next token that will give the highest reward
-        return np.argmax(act_values)
+        act_values = act_values / np.sum(act_values)
+        # pick the next token
+        return np.random.choice(range(self.action_size), p=act_values)
 
-    def replay(self, batch_size):
+    def replay(self, batch_size, current_episode=None,
+               update_epsilon_threshold=100):
         """ method that trains NN with experiences sampled from memory
         """
         # sample a minibatch from memory
@@ -68,8 +70,13 @@ class DQNAgent:
             # single epoch of training with x=state, y=target_f;
             # fit decreases loss btwn target_f and y_hat
             self.model.fit(state, target_f, epochs=1, verbose=0)
-        if self.epsilon > self.epsilon_min:
-            self.epsilon *= self.epsilon_decay
+        if current_episode is None:
+            if self.epsilon > self.epsilon_min:
+                self.epsilon *= self.epsilon_decay
+        else:
+            if current_episode > update_epsilon_threshold and \
+                                self.epsilon > self.epsilon_min:
+                self.epsilon *= self.epsilon_decay
 
     def load(self, name):
         self.model.load_weights(name)
